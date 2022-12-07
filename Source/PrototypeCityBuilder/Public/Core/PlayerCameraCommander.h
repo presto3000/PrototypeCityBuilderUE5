@@ -58,7 +58,7 @@ protected:
 	void SpawnActualBuildingEntity(const  TSubclassOf<AMasterBuilding> InMasterBuilding, const FTransform InTransform);
 	void UpdateUIBuildingAmountValuesAndCheckEndGame();
 	UFUNCTION(BlueprintCallable)
-	float CheckNearbyBuildingsClassesForBonus(const AMasterGhostBuilding* InGhostBuilding);
+	void CheckNearbyBuildingsClassesForBonus(const AMasterGhostBuilding* InGhostBuilding, int& OutCounterYellow,  int& OutCounterPurple, int& OutCounterWhite, int& OutCounterRed);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HitBuildingClasses)
 	TSubclassOf<AActor> GridSectionGrayClass;
@@ -83,7 +83,6 @@ protected:
 	bool bCanPutPurpleBuilding = true;
 	bool bIsItFirstBuilding = true;
 	
-	float SideBuildingsBonusValue = 0;
 	float MultiplierPointsValue = 0;
 
 	float Duration = 0.01;

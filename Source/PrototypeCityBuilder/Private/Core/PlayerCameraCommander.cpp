@@ -44,13 +44,21 @@ void APlayerCameraCommander::SetupPlayerInputComponent(UInputComponent* PlayerIn
 void APlayerCameraCommander::LeftMouseButtonAction()
 {
 	CB_PlayerController = CB_PlayerController == nullptr ? Cast<ACB_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0)) : CB_PlayerController;
+	
+
 	if (bIsPlacingBuilding)
 	{
+			
 		if (MasterGhostBuilding)
 		{
+			int CounterYellow = 0;
+			int CounterPurple = 0;
+			int CounterWhite = 0;
+			int CounterRed = 0;
+			
 			if (IsValid(HitGridActorClass))
 			{
-				SideBuildingsBonusValue = CheckNearbyBuildingsClassesForBonus(MasterGhostBuilding);
+				CheckNearbyBuildingsClassesForBonus(MasterGhostBuilding, CounterYellow, CounterPurple, CounterWhite, CounterRed);
 			}
 			if (bIsItFirstBuilding)
 			{
@@ -66,16 +74,18 @@ void APlayerCameraCommander::LeftMouseButtonAction()
 						case EGhostBuildingTypes::Red:
 							if (bCanPutRedBuilding)
 							{
-								ScoreValue = ScoreValue + 10.f + SideBuildingsBonusValue;
+								const int RedBonus = (CounterYellow * 3.f) + (CounterWhite * 2.f) + (CounterPurple * -2.f);
+								ScoreValue = ScoreValue + 10.f + RedBonus;
 								PlacingBuilding();
 								CB_PlayerController->UpdateScoreInUI(ScoreValue);
 							}
 							break;
 						case EGhostBuildingTypes::Yellow:
 							if (bCanPutYellowBuilding)
-							{
+							{                                                                              
+								const int YellowBonus = (CounterRed * 3.f) + (CounterWhite * 3.f) + (CounterPurple * (-1.f));
 								MultiplierPointsValue = 2.f;
-								ScoreValue = (MultiplierPointsValue * 8.f) + ScoreValue + SideBuildingsBonusValue;
+								ScoreValue = (MultiplierPointsValue * 8.f) + ScoreValue + YellowBonus;
 								PlacingBuilding();
 								CB_PlayerController->UpdateScoreInUI(ScoreValue);
 							}
@@ -83,8 +93,9 @@ void APlayerCameraCommander::LeftMouseButtonAction()
 						case EGhostBuildingTypes::White:
 							if (bCanPutWhiteBuilding)
 							{
+								const int WhiteBonus = (CounterRed * 2.f) + (CounterYellow * 3.f) + (CounterPurple * 1.f);
 								MultiplierPointsValue = 2.f;
-								ScoreValue = (MultiplierPointsValue * 6.f) + ScoreValue + SideBuildingsBonusValue;
+								ScoreValue = (MultiplierPointsValue * 6.f) + ScoreValue + WhiteBonus;
 								PlacingBuilding();
 								CB_PlayerController->UpdateScoreInUI(ScoreValue);
 							}
@@ -92,7 +103,8 @@ void APlayerCameraCommander::LeftMouseButtonAction()
 						case EGhostBuildingTypes::Purple:
 							if (bCanPutPurpleBuilding)
 							{
-								ScoreValue = ScoreValue + 5.f + SideBuildingsBonusValue;
+								const int PurpleBonus = (CounterRed * -2.f) + (CounterYellow * -1.f) + (CounterWhite * 1.f);
+								ScoreValue = ScoreValue + 5.f + PurpleBonus;
 								PlacingBuilding();
 								CB_PlayerController->UpdateScoreInUI(ScoreValue);
 							}
@@ -106,8 +118,9 @@ void APlayerCameraCommander::LeftMouseButtonAction()
 						case EGhostBuildingTypes::Red:
 							if (bCanPutRedBuilding)
 							{
+								const int RedBonus = (CounterYellow * 3.f) + (CounterWhite * 2.f) + (CounterPurple * -2.f);
 								MultiplierPointsValue = 0.5f;
-								ScoreValue = (MultiplierPointsValue * 10.f) + ScoreValue + SideBuildingsBonusValue;
+								ScoreValue = (MultiplierPointsValue * 10.f) + ScoreValue + RedBonus;
 								PlacingBuilding();
 								CB_PlayerController->UpdateScoreInUI(ScoreValue);
 							}
@@ -115,7 +128,8 @@ void APlayerCameraCommander::LeftMouseButtonAction()
 						case EGhostBuildingTypes::Yellow:
 							if (bCanPutYellowBuilding)
 							{
-								ScoreValue = ScoreValue + 8.f + SideBuildingsBonusValue;
+								const int YellowBonus = (CounterRed * 3.f) + (CounterWhite * 3.f) + (CounterPurple * (-1.f));
+								ScoreValue = ScoreValue + 8.f + YellowBonus;
 								PlacingBuilding();
 								CB_PlayerController->UpdateScoreInUI(ScoreValue);
 							}
@@ -123,8 +137,9 @@ void APlayerCameraCommander::LeftMouseButtonAction()
 						case EGhostBuildingTypes::White:
 							if (bCanPutWhiteBuilding)
 							{
+								const int WhiteBonus = (CounterRed * 2.f) + (CounterYellow * 3.f) + (CounterPurple * 1.f);
 								MultiplierPointsValue = 0.5f;
-								ScoreValue = (MultiplierPointsValue * 6.f) + ScoreValue + SideBuildingsBonusValue;
+								ScoreValue = (MultiplierPointsValue * 6.f) + ScoreValue + WhiteBonus;
 								PlacingBuilding();
 								CB_PlayerController->UpdateScoreInUI(ScoreValue);
 							}
@@ -132,8 +147,9 @@ void APlayerCameraCommander::LeftMouseButtonAction()
 						case EGhostBuildingTypes::Purple:
 							if (bCanPutPurpleBuilding)
 							{
+								const int PurpleBonus = (CounterRed * -2.f) + (CounterYellow * -1.f) + (CounterWhite * 1.f);
 								MultiplierPointsValue = 2.f;
-								ScoreValue = (MultiplierPointsValue * 5.f) + ScoreValue + SideBuildingsBonusValue;
+								ScoreValue = (MultiplierPointsValue * 5.f) + ScoreValue + PurpleBonus;
 								PlacingBuilding();
 								CB_PlayerController->UpdateScoreInUI(ScoreValue);
 							}
@@ -153,7 +169,8 @@ void APlayerCameraCommander::LeftMouseButtonAction()
 						case EGhostBuildingTypes::Red:
 							if (bCanPutRedBuilding)
 							{
-								ScoreValue = ScoreValue + 10.f + SideBuildingsBonusValue;
+								const int RedBonus = (CounterYellow * 3.f) + (CounterWhite * 2.f) + (CounterPurple * -2.f);
+								ScoreValue = ScoreValue + 10.f + RedBonus;
 								PlacingBuilding();
 								CB_PlayerController->UpdateScoreInUI(ScoreValue);
 							}
@@ -161,8 +178,9 @@ void APlayerCameraCommander::LeftMouseButtonAction()
 						case EGhostBuildingTypes::Yellow:
 							if (bCanPutYellowBuilding)
 							{
+								const int YellowBonus = (CounterRed * 3.f) + (CounterWhite * 3.f) + (CounterPurple * (-1.f));
 								MultiplierPointsValue = 2.f;
-								ScoreValue = (MultiplierPointsValue * 8.f) + ScoreValue + SideBuildingsBonusValue;
+								ScoreValue = (MultiplierPointsValue * 8.f) + ScoreValue + YellowBonus;
 								PlacingBuilding();
 								CB_PlayerController->UpdateScoreInUI(ScoreValue);
 							}
@@ -170,8 +188,9 @@ void APlayerCameraCommander::LeftMouseButtonAction()
 						case EGhostBuildingTypes::White:
 							if (bCanPutWhiteBuilding)
 							{
+								const int WhiteBonus = (CounterRed * 2.f) + (CounterYellow * 3.f) + (CounterPurple * 1.f);
 								MultiplierPointsValue = 2.f;
-								ScoreValue = (MultiplierPointsValue * 6.f) + ScoreValue + SideBuildingsBonusValue;
+								ScoreValue = (MultiplierPointsValue * 6.f) + ScoreValue + WhiteBonus;
 								PlacingBuilding();
 								CB_PlayerController->UpdateScoreInUI(ScoreValue);
 							}
@@ -179,7 +198,8 @@ void APlayerCameraCommander::LeftMouseButtonAction()
 						case EGhostBuildingTypes::Purple:
 							if (bCanPutPurpleBuilding)
 							{
-								ScoreValue = ScoreValue + 5.f + SideBuildingsBonusValue;
+								const int PurpleBonus = (CounterRed * -2.f) + (CounterYellow * -1.f) + (CounterWhite * 1.f);
+								ScoreValue = ScoreValue + 5.f + PurpleBonus;
 								PlacingBuilding();
 								CB_PlayerController->UpdateScoreInUI(ScoreValue);
 							}
@@ -193,8 +213,9 @@ void APlayerCameraCommander::LeftMouseButtonAction()
 						case EGhostBuildingTypes::Red:
 							if (bCanPutRedBuilding)
 							{
+								const int RedBonus = (CounterYellow * 3.f) + (CounterWhite * 2.f) + (CounterPurple * -2.f);
 								MultiplierPointsValue = 0.5f;
-								ScoreValue = (MultiplierPointsValue * 10.f) + ScoreValue + SideBuildingsBonusValue;
+								ScoreValue = (MultiplierPointsValue * 10.f) + ScoreValue + RedBonus;
 								PlacingBuilding();
 								CB_PlayerController->UpdateScoreInUI(ScoreValue);
 							}
@@ -202,7 +223,8 @@ void APlayerCameraCommander::LeftMouseButtonAction()
 						case EGhostBuildingTypes::Yellow:
 							if (bCanPutYellowBuilding)
 							{
-								ScoreValue = ScoreValue + 8.f + SideBuildingsBonusValue;
+								const int YellowBonus = (CounterRed * 3.f) + (CounterWhite * 3.f) + (CounterPurple * (-1.f));
+								ScoreValue = ScoreValue + 8.f + YellowBonus;
 								PlacingBuilding();
 								CB_PlayerController->UpdateScoreInUI(ScoreValue);
 							}
@@ -210,8 +232,9 @@ void APlayerCameraCommander::LeftMouseButtonAction()
 						case EGhostBuildingTypes::White:
 							if (bCanPutWhiteBuilding)
 							{
+								const int WhiteBonus = (CounterRed * 2.f) + (CounterYellow * 3.f) + (CounterPurple * 1.f);
 								MultiplierPointsValue = 0.5f;
-								ScoreValue = (MultiplierPointsValue * 6.f) + ScoreValue + SideBuildingsBonusValue;
+								ScoreValue = (MultiplierPointsValue * 6.f) + ScoreValue + WhiteBonus;
 								PlacingBuilding();
 								CB_PlayerController->UpdateScoreInUI(ScoreValue);
 							}
@@ -219,8 +242,9 @@ void APlayerCameraCommander::LeftMouseButtonAction()
 						case EGhostBuildingTypes::Purple:
 							if (bCanPutPurpleBuilding)
 							{
+								const int PurpleBonus = (CounterRed * -2.f) + (CounterYellow * -1.f) + (CounterWhite * 1.f);
 								MultiplierPointsValue = 2.f;
-								ScoreValue = (MultiplierPointsValue * 5.f) + ScoreValue + SideBuildingsBonusValue;
+								ScoreValue = (MultiplierPointsValue * 5.f) + ScoreValue + PurpleBonus;
 								PlacingBuilding();
 								CB_PlayerController->UpdateScoreInUI(ScoreValue);
 							}
@@ -392,7 +416,7 @@ void APlayerCameraCommander::UpdateUIBuildingAmountValuesAndCheckEndGame()
 
 
 
-float APlayerCameraCommander::CheckNearbyBuildingsClassesForBonus(const AMasterGhostBuilding* InGhostBuilding)
+void APlayerCameraCommander::CheckNearbyBuildingsClassesForBonus(const AMasterGhostBuilding* InGhostBuilding, int& OutCounterYellow,  int& OutCounterPurple, int& OutCounterWhite, int& OutCounterRed)
 {
 	int CounterYellow = 0;
 	int CounterPurple = 0;
@@ -474,7 +498,12 @@ float APlayerCameraCommander::CheckNearbyBuildingsClassesForBonus(const AMasterG
 	}
 
 	// Check Bonuses
+	OutCounterYellow = CounterYellow;
+	OutCounterRed = CounterRed;
+	OutCounterPurple = CounterPurple;
+	OutCounterWhite = CounterWhite;
 
+	/**
 	if (CounterYellow > 0 && CounterRed > 0)
 	{
 		MultiplierBonus = 3.f;
@@ -510,5 +539,5 @@ float APlayerCameraCommander::CheckNearbyBuildingsClassesForBonus(const AMasterG
 		MultiplierBonus = 0.f;
 		return MultiplierBonus;
 	}
-	
+	*/
 }
