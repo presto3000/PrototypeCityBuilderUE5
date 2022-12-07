@@ -51,204 +51,194 @@ void APlayerCameraCommander::LeftMouseButtonAction()
 			
 		if (MasterGhostBuilding)
 		{
-			int CounterYellow = 0;
-			int CounterPurple = 0;
-			int CounterWhite = 0;
-			int CounterRed = 0;
-			
+
 			if (IsValid(HitGridActorClass))
 			{
+				int CounterYellow = 0;
+				int CounterPurple = 0;
+				int CounterWhite = 0;
+				int CounterRed = 0;
+			
 				CheckNearbyBuildingsClassesForBonus(MasterGhostBuilding, CounterYellow, CounterPurple, CounterWhite, CounterRed);
-			}
-			if (bIsItFirstBuilding)
-			{
-				if (HitGridActorClass == GridSectionBlueClass)
+				
+				const int RedBonus = (CounterYellow * 3.f) + (CounterWhite * 2.f) + (CounterPurple * -2.f);
+				const int YellowBonus = (CounterRed * 3.f) + (CounterWhite * 3.f) + (CounterPurple * (-1.f));
+				const int WhiteBonus = (CounterRed * 2.f) + (CounterYellow * 3.f) + (CounterPurple * 1.f);
+				const int PurpleBonus = (CounterRed * -2.f) + (CounterYellow * -1.f) + (CounterWhite * 1.f);
+				if (bIsItFirstBuilding)
 				{
+					if (HitGridActorClass == GridSectionBlueClass)
+					{
+					}
+					else
+					{
+						if (HitGridActorClass == GridSectionGreenClass)
+						{
+							switch (MasterGhostBuilding->GhostBuildingType)
+							{
+							case EGhostBuildingTypes::Red:
+								if (bCanPutRedBuilding)
+								{
+									ScoreValue = ScoreValue + 10.f + RedBonus;
+									PlacingBuilding();
+									CB_PlayerController->UpdateScoreInUI(ScoreValue);
+								}
+								break;
+							case EGhostBuildingTypes::Yellow:
+								if (bCanPutYellowBuilding)
+								{                                                                              
+									MultiplierPointsValue = 2.f;
+									ScoreValue = (MultiplierPointsValue * 8.f) + ScoreValue + YellowBonus;
+									PlacingBuilding();
+									CB_PlayerController->UpdateScoreInUI(ScoreValue);
+								}
+								break;
+							case EGhostBuildingTypes::White:
+								if (bCanPutWhiteBuilding)
+								{
+									MultiplierPointsValue = 2.f;
+									ScoreValue = (MultiplierPointsValue * 6.f) + ScoreValue + WhiteBonus;
+									PlacingBuilding();
+									CB_PlayerController->UpdateScoreInUI(ScoreValue);
+								}
+								break;
+							case EGhostBuildingTypes::Purple:
+								if (bCanPutPurpleBuilding)
+								{
+									ScoreValue = ScoreValue + 5.f + PurpleBonus;
+									PlacingBuilding();
+									CB_PlayerController->UpdateScoreInUI(ScoreValue);
+								}
+								break;
+							}
+						}
+						else if (HitGridActorClass == GridSectionGrayClass)
+						{
+							switch (MasterGhostBuilding->GhostBuildingType)
+							{
+							case EGhostBuildingTypes::Red:
+								if (bCanPutRedBuilding)
+								{
+									MultiplierPointsValue = 0.5f;
+									ScoreValue = (MultiplierPointsValue * 10.f) + ScoreValue + RedBonus;
+									PlacingBuilding();
+									CB_PlayerController->UpdateScoreInUI(ScoreValue);
+								}
+								break;
+							case EGhostBuildingTypes::Yellow:
+								if (bCanPutYellowBuilding)
+								{
+									ScoreValue = ScoreValue + 8.f + YellowBonus;
+									PlacingBuilding();
+									CB_PlayerController->UpdateScoreInUI(ScoreValue);
+								}
+								break;
+							case EGhostBuildingTypes::White:
+								if (bCanPutWhiteBuilding)
+								{
+									MultiplierPointsValue = 0.5f;
+									ScoreValue = (MultiplierPointsValue * 6.f) + ScoreValue + WhiteBonus;
+									PlacingBuilding();
+									CB_PlayerController->UpdateScoreInUI(ScoreValue);
+								}
+								break;
+							case EGhostBuildingTypes::Purple:
+								if (bCanPutPurpleBuilding)
+								{
+									MultiplierPointsValue = 2.f;
+									ScoreValue = (MultiplierPointsValue * 5.f) + ScoreValue + PurpleBonus;
+									PlacingBuilding();
+									CB_PlayerController->UpdateScoreInUI(ScoreValue);
+								}
+								break;
+							}
+						}
+					}
 				}
 				else
 				{
-					if (HitGridActorClass == GridSectionGreenClass)
+					if (MasterGhostBuilding->bCanPutActualBuilding)
 					{
-						switch (MasterGhostBuilding->GhostBuildingType)
+								if (HitGridActorClass == GridSectionGreenClass)
 						{
-						case EGhostBuildingTypes::Red:
-							if (bCanPutRedBuilding)
+							switch (MasterGhostBuilding->GhostBuildingType)
 							{
-								const int RedBonus = (CounterYellow * 3.f) + (CounterWhite * 2.f) + (CounterPurple * -2.f);
-								ScoreValue = ScoreValue + 10.f + RedBonus;
-								PlacingBuilding();
-								CB_PlayerController->UpdateScoreInUI(ScoreValue);
+							case EGhostBuildingTypes::Red:
+								if (bCanPutRedBuilding)
+								{
+									ScoreValue = ScoreValue + 10.f + RedBonus;
+									PlacingBuilding();
+									CB_PlayerController->UpdateScoreInUI(ScoreValue);
+								}
+								break;
+							case EGhostBuildingTypes::Yellow:
+								if (bCanPutYellowBuilding)
+								{
+									MultiplierPointsValue = 2.f;
+									ScoreValue = (MultiplierPointsValue * 8.f) + ScoreValue + YellowBonus;
+									PlacingBuilding();
+									CB_PlayerController->UpdateScoreInUI(ScoreValue);
+								}
+								break;
+							case EGhostBuildingTypes::White:
+								if (bCanPutWhiteBuilding)
+								{
+									MultiplierPointsValue = 2.f;
+									ScoreValue = (MultiplierPointsValue * 6.f) + ScoreValue + WhiteBonus;
+									PlacingBuilding();
+									CB_PlayerController->UpdateScoreInUI(ScoreValue);
+								}
+								break;
+							case EGhostBuildingTypes::Purple:
+								if (bCanPutPurpleBuilding)
+								{
+									ScoreValue = ScoreValue + 5.f + PurpleBonus;
+									PlacingBuilding();
+									CB_PlayerController->UpdateScoreInUI(ScoreValue);
+								}
+								break;
 							}
-							break;
-						case EGhostBuildingTypes::Yellow:
-							if (bCanPutYellowBuilding)
-							{                                                                              
-								const int YellowBonus = (CounterRed * 3.f) + (CounterWhite * 3.f) + (CounterPurple * (-1.f));
-								MultiplierPointsValue = 2.f;
-								ScoreValue = (MultiplierPointsValue * 8.f) + ScoreValue + YellowBonus;
-								PlacingBuilding();
-								CB_PlayerController->UpdateScoreInUI(ScoreValue);
-							}
-							break;
-						case EGhostBuildingTypes::White:
-							if (bCanPutWhiteBuilding)
-							{
-								const int WhiteBonus = (CounterRed * 2.f) + (CounterYellow * 3.f) + (CounterPurple * 1.f);
-								MultiplierPointsValue = 2.f;
-								ScoreValue = (MultiplierPointsValue * 6.f) + ScoreValue + WhiteBonus;
-								PlacingBuilding();
-								CB_PlayerController->UpdateScoreInUI(ScoreValue);
-							}
-							break;
-						case EGhostBuildingTypes::Purple:
-							if (bCanPutPurpleBuilding)
-							{
-								const int PurpleBonus = (CounterRed * -2.f) + (CounterYellow * -1.f) + (CounterWhite * 1.f);
-								ScoreValue = ScoreValue + 5.f + PurpleBonus;
-								PlacingBuilding();
-								CB_PlayerController->UpdateScoreInUI(ScoreValue);
-							}
-							break;
 						}
-					}
-					else if (HitGridActorClass == GridSectionGrayClass)
-					{
-						switch (MasterGhostBuilding->GhostBuildingType)
+						else if (HitGridActorClass == GridSectionGrayClass)
 						{
-						case EGhostBuildingTypes::Red:
-							if (bCanPutRedBuilding)
+							switch (MasterGhostBuilding->GhostBuildingType)
 							{
-								const int RedBonus = (CounterYellow * 3.f) + (CounterWhite * 2.f) + (CounterPurple * -2.f);
-								MultiplierPointsValue = 0.5f;
-								ScoreValue = (MultiplierPointsValue * 10.f) + ScoreValue + RedBonus;
-								PlacingBuilding();
-								CB_PlayerController->UpdateScoreInUI(ScoreValue);
+							case EGhostBuildingTypes::Red:
+								if (bCanPutRedBuilding)
+								{
+									MultiplierPointsValue = 0.5f;
+									ScoreValue = (MultiplierPointsValue * 10.f) + ScoreValue + RedBonus;
+									PlacingBuilding();
+									CB_PlayerController->UpdateScoreInUI(ScoreValue);
+								}
+								break;
+							case EGhostBuildingTypes::Yellow:
+								if (bCanPutYellowBuilding)
+								{
+									ScoreValue = ScoreValue + 8.f + YellowBonus;
+									PlacingBuilding();
+									CB_PlayerController->UpdateScoreInUI(ScoreValue);
+								}
+								break;
+							case EGhostBuildingTypes::White:
+								if (bCanPutWhiteBuilding)
+								{
+									MultiplierPointsValue = 0.5f;
+									ScoreValue = (MultiplierPointsValue * 6.f) + ScoreValue + WhiteBonus;
+									PlacingBuilding();
+									CB_PlayerController->UpdateScoreInUI(ScoreValue);
+								}
+								break;
+							case EGhostBuildingTypes::Purple:
+								if (bCanPutPurpleBuilding)
+								{
+									MultiplierPointsValue = 2.f;
+									ScoreValue = (MultiplierPointsValue * 5.f) + ScoreValue + PurpleBonus;
+									PlacingBuilding();
+									CB_PlayerController->UpdateScoreInUI(ScoreValue);
+								}
+								break;
 							}
-							break;
-						case EGhostBuildingTypes::Yellow:
-							if (bCanPutYellowBuilding)
-							{
-								const int YellowBonus = (CounterRed * 3.f) + (CounterWhite * 3.f) + (CounterPurple * (-1.f));
-								ScoreValue = ScoreValue + 8.f + YellowBonus;
-								PlacingBuilding();
-								CB_PlayerController->UpdateScoreInUI(ScoreValue);
-							}
-							break;
-						case EGhostBuildingTypes::White:
-							if (bCanPutWhiteBuilding)
-							{
-								const int WhiteBonus = (CounterRed * 2.f) + (CounterYellow * 3.f) + (CounterPurple * 1.f);
-								MultiplierPointsValue = 0.5f;
-								ScoreValue = (MultiplierPointsValue * 6.f) + ScoreValue + WhiteBonus;
-								PlacingBuilding();
-								CB_PlayerController->UpdateScoreInUI(ScoreValue);
-							}
-							break;
-						case EGhostBuildingTypes::Purple:
-							if (bCanPutPurpleBuilding)
-							{
-								const int PurpleBonus = (CounterRed * -2.f) + (CounterYellow * -1.f) + (CounterWhite * 1.f);
-								MultiplierPointsValue = 2.f;
-								ScoreValue = (MultiplierPointsValue * 5.f) + ScoreValue + PurpleBonus;
-								PlacingBuilding();
-								CB_PlayerController->UpdateScoreInUI(ScoreValue);
-							}
-							break;
-						}
-					}
-				}
-			}
-			else
-			{
-				if (MasterGhostBuilding->bCanPutActualBuilding)
-				{
-							if (HitGridActorClass == GridSectionGreenClass)
-					{
-						switch (MasterGhostBuilding->GhostBuildingType)
-						{
-						case EGhostBuildingTypes::Red:
-							if (bCanPutRedBuilding)
-							{
-								const int RedBonus = (CounterYellow * 3.f) + (CounterWhite * 2.f) + (CounterPurple * -2.f);
-								ScoreValue = ScoreValue + 10.f + RedBonus;
-								PlacingBuilding();
-								CB_PlayerController->UpdateScoreInUI(ScoreValue);
-							}
-							break;
-						case EGhostBuildingTypes::Yellow:
-							if (bCanPutYellowBuilding)
-							{
-								const int YellowBonus = (CounterRed * 3.f) + (CounterWhite * 3.f) + (CounterPurple * (-1.f));
-								MultiplierPointsValue = 2.f;
-								ScoreValue = (MultiplierPointsValue * 8.f) + ScoreValue + YellowBonus;
-								PlacingBuilding();
-								CB_PlayerController->UpdateScoreInUI(ScoreValue);
-							}
-							break;
-						case EGhostBuildingTypes::White:
-							if (bCanPutWhiteBuilding)
-							{
-								const int WhiteBonus = (CounterRed * 2.f) + (CounterYellow * 3.f) + (CounterPurple * 1.f);
-								MultiplierPointsValue = 2.f;
-								ScoreValue = (MultiplierPointsValue * 6.f) + ScoreValue + WhiteBonus;
-								PlacingBuilding();
-								CB_PlayerController->UpdateScoreInUI(ScoreValue);
-							}
-							break;
-						case EGhostBuildingTypes::Purple:
-							if (bCanPutPurpleBuilding)
-							{
-								const int PurpleBonus = (CounterRed * -2.f) + (CounterYellow * -1.f) + (CounterWhite * 1.f);
-								ScoreValue = ScoreValue + 5.f + PurpleBonus;
-								PlacingBuilding();
-								CB_PlayerController->UpdateScoreInUI(ScoreValue);
-							}
-							break;
-						}
-					}
-					else if (HitGridActorClass == GridSectionGrayClass)
-					{
-						switch (MasterGhostBuilding->GhostBuildingType)
-						{
-						case EGhostBuildingTypes::Red:
-							if (bCanPutRedBuilding)
-							{
-								const int RedBonus = (CounterYellow * 3.f) + (CounterWhite * 2.f) + (CounterPurple * -2.f);
-								MultiplierPointsValue = 0.5f;
-								ScoreValue = (MultiplierPointsValue * 10.f) + ScoreValue + RedBonus;
-								PlacingBuilding();
-								CB_PlayerController->UpdateScoreInUI(ScoreValue);
-							}
-							break;
-						case EGhostBuildingTypes::Yellow:
-							if (bCanPutYellowBuilding)
-							{
-								const int YellowBonus = (CounterRed * 3.f) + (CounterWhite * 3.f) + (CounterPurple * (-1.f));
-								ScoreValue = ScoreValue + 8.f + YellowBonus;
-								PlacingBuilding();
-								CB_PlayerController->UpdateScoreInUI(ScoreValue);
-							}
-							break;
-						case EGhostBuildingTypes::White:
-							if (bCanPutWhiteBuilding)
-							{
-								const int WhiteBonus = (CounterRed * 2.f) + (CounterYellow * 3.f) + (CounterPurple * 1.f);
-								MultiplierPointsValue = 0.5f;
-								ScoreValue = (MultiplierPointsValue * 6.f) + ScoreValue + WhiteBonus;
-								PlacingBuilding();
-								CB_PlayerController->UpdateScoreInUI(ScoreValue);
-							}
-							break;
-						case EGhostBuildingTypes::Purple:
-							if (bCanPutPurpleBuilding)
-							{
-								const int PurpleBonus = (CounterRed * -2.f) + (CounterYellow * -1.f) + (CounterWhite * 1.f);
-								MultiplierPointsValue = 2.f;
-								ScoreValue = (MultiplierPointsValue * 5.f) + ScoreValue + PurpleBonus;
-								PlacingBuilding();
-								CB_PlayerController->UpdateScoreInUI(ScoreValue);
-							}
-							break;
 						}
 					}
 				}
@@ -414,15 +404,13 @@ void APlayerCameraCommander::UpdateUIBuildingAmountValuesAndCheckEndGame()
 	}
 }
 
-
-
 void APlayerCameraCommander::CheckNearbyBuildingsClassesForBonus(const AMasterGhostBuilding* InGhostBuilding, int& OutCounterYellow,  int& OutCounterPurple, int& OutCounterWhite, int& OutCounterRed)
 {
 	int CounterYellow = 0;
 	int CounterPurple = 0;
 	int CounterWhite = 0;
 	int CounterRed = 0;
-	float MultiplierBonus = 0;
+	//float MultiplierBonus = 0;
 	
 	// First Hit Actor
 	if (InGhostBuilding->FirstHitActorClass == WhiteBuildingClass)
