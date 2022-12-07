@@ -23,9 +23,9 @@ void AGridPlacer::BeginPlay()
 		return;
 	}
 	
-	for (int32 i = 0; i < (Width - 1); ++i)
+	for (int32 i = 0; i < Width; ++i)
 	{
-		for (int32 j = 0; j < (Depth - 1); ++j)
+		for (int32 j = 0; j < Depth; ++j)
 		{
 			const int32 RandomInt = UKismetMathLibrary::RandomInteger(3);
 			FVector TransformLocation = {static_cast<double>(i * 100), static_cast<double>(j * 100), 0};
