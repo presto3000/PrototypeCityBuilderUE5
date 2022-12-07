@@ -28,10 +28,6 @@ void AMasterGhostBuilding::Tick(float DeltaTime)
 	
 }
 
-void AMasterGhostBuilding::GetGhostBuildingTransform()
-{
-	GhostBuildingTransform = GetActorTransform();
-}
 
 void AMasterGhostBuilding::AllAroundTracers()
 {

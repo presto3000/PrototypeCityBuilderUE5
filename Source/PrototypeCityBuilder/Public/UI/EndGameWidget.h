@@ -18,8 +18,10 @@ class PROTOTYPECITYBUILDER_API UEndGameWidget : public UUserWidget
 
 public:
 	virtual void NativeConstruct() override;
+	
 	UPROPERTY(Transient, BlueprintReadWrite, meta = (BindWidgetAnim))
 	UWidgetAnimation* FadeIn;
+	
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UTextBlock* TxtScore;
 

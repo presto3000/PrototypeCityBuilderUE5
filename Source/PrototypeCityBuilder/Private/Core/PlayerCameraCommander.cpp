@@ -256,7 +256,11 @@ void APlayerCameraCommander::PlacingGhostBuilding(const TSubclassOf<AMasterGhost
 	// Set GhostBuilding Actor
 	GhostBuildingActor = World->SpawnActor<AMasterGhostBuilding>(InMasterGhostBuilding, FVector{-400, -400, 0}, FRotator {1, 1, 1});
 
-	MasterGhostBuilding = Cast<AMasterGhostBuilding>(GhostBuildingActor);
+	if (GhostBuildingActor)
+	{
+		MasterGhostBuilding = Cast<AMasterGhostBuilding>(GhostBuildingActor);
+	}
+
 	
 	// Set Timer
 	World->GetTimerManager().SetTimer(TimerHandle_PlacingGhostBuilding, this, &APlayerCameraCommander::UpdateMovingGhostBuilding, Duration, true);
@@ -275,11 +279,8 @@ void APlayerCameraCommander::UpdateMovingGhostBuilding()
 		CB_PlayerController = CB_PlayerController == nullptr ? Cast<ACB_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0)) : CB_PlayerController;
 		FHitResult HitResult;
 		FHitResult HitResult2;
-		if (CB_PlayerController)
-		{
-			CB_PlayerController->GetHitResultUnderCursorForObjects(ObjectTypesStaticArray, true, HitResult);
-			CB_PlayerController->GetHitResultUnderCursorForObjects(ObjectTypesDynamicArray, true, HitResult2);
-		}
+		CB_PlayerController->GetHitResultUnderCursorForObjects(ObjectTypesStaticArray, true, HitResult);
+		CB_PlayerController->GetHitResultUnderCursorForObjects(ObjectTypesDynamicArray, true, HitResult2);
 
 		if (HitResult.bBlockingHit && !HitResult2.bBlockingHit)
 		{
@@ -303,7 +304,6 @@ void APlayerCameraCommander::PlacingBuilding()
 	
 	ClearMovingGhostTimer();
 }
-
 
 
 void APlayerCameraCommander::ClearMovingGhostTimer()

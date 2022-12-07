@@ -30,7 +30,6 @@ public:
 	UPurpleWidgetButton* WBP_BuildingButtonPurple;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	URedWidgetButton* WBP_BuildingButtonRed;
-
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UWhiteWidgetButton* WBP_BuildingButtonWhite;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))

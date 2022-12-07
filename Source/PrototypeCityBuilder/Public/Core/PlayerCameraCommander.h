@@ -25,79 +25,69 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	AActor* GhostBuildingActor;
+	
 	float ScoreValue;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AmountOfBuildingsToBePlace)
-	int32 AmountOfPurpleBuildings = 4;
+	int32 AmountOfPurpleBuildings = 40;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AmountOfBuildingsToBePlace)
-	int32 AmountOfRedBuildings = 4;
+	int32 AmountOfRedBuildings = 20;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AmountOfBuildingsToBePlace)
-	int32 AmountOfWhiteBuildings = 4;
+	int32 AmountOfWhiteBuildings = 35;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = AmountOfBuildingsToBePlace)
-	int32 AmountOfYellowBuildings = 4;
+	int32 AmountOfYellowBuildings = 25;
 protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY()
 	ACB_PlayerController* CB_PlayerController;
-	
-	void LeftMouseButtonAction();
-	void RightMouseButtonAction();
-	void PlacingBuilding();
-
-
-	void UpdateMovingGhostBuilding();
-	void ClearMovingGhostTimer();
-	
-
-	void SpawnActualBuildingEntity(const  TSubclassOf<AMasterBuilding> InMasterBuilding, const FTransform InTransform);
-
-	void UpdateUIBuildingAmountValuesAndCheckEndGame();
-	
-	bool bIsPlacingBuilding;
-
 	UPROPERTY()
 	AMasterGhostBuilding*  MasterGhostBuilding;
 	UPROPERTY()
 	TSubclassOf<AGridSectionMaster> HitGridActorClass;
 	UPROPERTY()
 	TSubclassOf<AMasterBuilding> ActualBuildingClass;
-
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypesStaticArray;
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypesDynamicArray;
-
+	
+	void LeftMouseButtonAction();
+	void RightMouseButtonAction();
+	
+	void PlacingBuilding();
+	void UpdateMovingGhostBuilding();
+	void ClearMovingGhostTimer();
+	void SpawnActualBuildingEntity(const  TSubclassOf<AMasterBuilding> InMasterBuilding, const FTransform InTransform);
+	void UpdateUIBuildingAmountValuesAndCheckEndGame();
 	UFUNCTION(BlueprintCallable)
 	float CheckNearbyBuildingsClassesForBonus(const AMasterGhostBuilding* InGhostBuilding);
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HitBuildingClasses, meta = (AllowPrivateAccess = "true"))
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HitBuildingClasses)
 	TSubclassOf<AActor> GridSectionGrayClass;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HitBuildingClasses, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HitBuildingClasses)
 	TSubclassOf<AActor> GridSectionBlueClass;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HitBuildingClasses, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HitBuildingClasses)
 	TSubclassOf<AActor> GridSectionGreenClass;
 	
-	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HitBuildingClasses, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HitBuildingClasses)
 	TSubclassOf<AActor> WhiteBuildingClass;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HitBuildingClasses, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HitBuildingClasses)
 	TSubclassOf<AActor> YellowBuildingClass;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HitBuildingClasses, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HitBuildingClasses)
 	TSubclassOf<AActor> RedBuildingClass;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HitBuildingClasses, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = HitBuildingClasses)
 	TSubclassOf<AActor> PurpleBuildingClass;
 
+	bool bIsPlacingBuilding = false;
 	bool bCanPutRedBuilding = true;
 	bool bCanPutYellowBuilding = true;
 	bool bCanPutWhiteBuilding = true;
 	bool bCanPutPurpleBuilding = true;
-	
 	bool bIsItFirstBuilding = true;
 	
 	float SideBuildingsBonusValue = 0;
-	float MultiplierPointsValue;
+	float MultiplierPointsValue = 0;
 
 	float Duration = 0.01;
 	FTimerHandle TimerHandle_PlacingGhostBuilding;
-	
 
 public:
 	virtual void Tick(float DeltaTime) override;
